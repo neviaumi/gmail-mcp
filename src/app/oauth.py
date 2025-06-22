@@ -22,16 +22,22 @@ def is_user_logged_in(email: str):
         creds = Credentials.from_authorized_user_file(authorized_user_file, SCOPES)
     except:
         return False
+    if creds.expired and creds.refresh_token:
+        try:
+            creds.refresh(Request())
+            with open(authorized_user_file, 'w') as f:
+                f.write(creds.to_json())
+            return True
+        except:
+            return False
     return creds.valid
+
 
 def get_user_credentials(email: str):
     authorized_user_file = f"user-credentials/{email}.json"
     credentials = Credentials.from_authorized_user_file(authorized_user_file, SCOPES)
-    if credentials.expired and credentials.refresh_token:
-        credentials.refresh(Request())
-        with open(authorized_user_file, 'w') as f:
-            f.write(credentials.to_json())
     return credentials
+
 
 def generate_authorization_url(email: str):
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('credentials.json',
@@ -88,3 +94,10 @@ def handle_oauth2_error(error: str):
 @oauth2Api.get("/success")
 def handle_oauth2_success():
     return HTMLResponse("""<html><body>Login Success!</body></html>""")
+
+
+class LoginRequiredException(Exception):
+    def __init__(self, email: str):
+        self.email = email
+        super().__init__(f"""Login is required!
+Open {generate_authorization_url(email)} to login.""")
