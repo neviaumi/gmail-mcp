@@ -11,7 +11,7 @@ SCOPES = [
     "https://www.googleapis.com/auth/userinfo.email",
     "openid",
 ]
-OAUTH_REDIRECT_URI = "http://localhost:8080/oauth2/callback"
+OAUTH_REDIRECT_URI = "http://google-workspace.dk-home-pi.net/oauth2/callback"
 
 
 oauth2Api = FastAPI()
