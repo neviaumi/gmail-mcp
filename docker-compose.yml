@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: ./scripts/docker/start.sh
+    entrypoint: /bin/sh
+    ports:
+      - "8082:8080"
