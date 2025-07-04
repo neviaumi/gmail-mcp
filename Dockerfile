@@ -1,7 +1,7 @@
 FROM ghcr.io/astral-sh/uv:alpine
 
 WORKDIR /app
-COPY ./pyproject.toml ./uv.lock ./mcp.json ./.python-version ./
+COPY ./credentials.json ./pyproject.toml ./uv.lock ./mcp.json ./.python-version ./
 COPY ./src ./src/
 COPY ./scripts/docker/ ./scripts/docker
 
